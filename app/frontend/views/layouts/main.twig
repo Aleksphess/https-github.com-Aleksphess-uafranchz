@@ -1,0 +1,366 @@
+{{ use('frontend/assets/AppAsset') }}
+{{ use('frontend/widgets/HeadMenu') }}
+{{ use('frontend/widgets/MobileMenu') }}
+{{ register_app_asset(this) }}
+
+{% if not app.user.isGuest %}
+  {#  {{ use('frontend/assets/CheckMessagesAsset') }}
+    {{ register_check_messages_asset(this) }}    #}
+{% endif %}
+
+{{ this.beginPage }}
+<!DOCTYPE html>
+<html class="page--index" lang="{{ app.language }}">
+<head>
+    <meta charset="{{ app.charset }}">
+    {{ html.csrfMetaTags | raw }}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="NOINDEX, NOFOLLOW">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
+    <title>{{ html.decode(Seo.get('title')) }}</title>
+    <meta name="description" content="{{ html.decode(Seo.get('description')) }}">
+        
+    {{  this.head  }}
+
+
+  </head>
+  <body>
+    {{ this.beginBody }}
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+
+               {# <div class="header__logo"><a class="logo" href="{{ Url.home() }}"><img src="/images/logo.png" alt=""></a></div>#}
+                <div class="header__logo">
+                     {% if app.user.isGuest %}
+                    <div class="header__login is--mobile-only">
+                        <div class="login"><i class="icon icon-login"></i><a class="login__item" data-modal="login" href="profile-data.html">Войти</a><a class="login__item" href="" data-modal="registration">Регистрация</a></div>
+                    </div>
+                     {% else %}
+                    <div class="header__login is--mobile-only">
+                                      <div class="login is--logged"><span class="login__item" href="">Профиль</span>
+                                        <ul class="login__profile">
+                                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/user/payment') }}">{{ this.params.membership }}</a></li>
+                                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/user/index') }}">{{ this.params.my_page }} ({{ app.user.identity.username }})</a></li>
+                                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/dialogs/index') }}">{{ this.params.my_messanges }}</a></li>
+                                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/user/lots') }}">{{ this.params.my_franchise }}</a></li>
+                                            {# <li class="login__profile-item"><a class="login__profile-link" href="/">Продлить франшизу</a></li>
+                                             <li class="login__profile-item"><a class="login__profile-link" href="">Популярность франшиз</a></li>#}
+                                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/user/bookmarks') }}">{{ this.params.favorites_franchise }}</a></li>
+                                            {#
+                                                                        <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/user/index') }}">Мои данные</a></li>
+                                            #}
+                                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/logout') }}">{{ this.params.exit }}</a></li>
+                                        </ul>
+                                      </div>
+                    </div>
+                        {% endif %}
+                    <div class="header__langs is--mobile-only">
+                        <div class="langs">
+                            {% for l in this.params.langs %}
+                                {% if l == this.params.lang %}
+                                    <div class="langs__current">{{ l.name|slice(0,3) }}</div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="langs__list">
+                                {% for l in this.params.langs %}
+
+                                    <a href="{{ l.langUrl }}"  class="langs__item" >{{ l.name|slice(0,3) }}</a>
+
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div><a class="logo" href="{{ Url.home() }}"><img src="/images/logo.png" alt=""></a>
+                </div>
+                <div class="header__search">
+                    <div class="search">
+                        <form class="search__form" action="/search/request" method="post">
+                            <input class="search__input" type="text" name="search" placeholder="{{ this.params.search_franchise }}">
+                            <button class="search__submit" type="submit"><i class="icon-search"></i></button>
+                        </form>
+                        <div class="search__example">{{ this.params.examle }}</div>
+                    </div>
+                </div>
+                <div class="header__action">
+                    <div class="header__login">
+                        {% if app.user.isGuest %}
+                        <div class="login"><i class="icon icon-login"></i>
+
+                                <a class="login__item" data-modal="login" href="{{ Url.toRoute('/login') }}">{{ this.params.login }}</a>
+                                <a class="login__item" href="{{ Url.toRoute('/auth/registration') }}" data-modal="registration">{{ this.params.registration }}</a></div>
+
+
+
+
+                {% else %}
+
+                    <div class="login is--logged"><a class="login__item" href="/user/index">{{ this.params.profile }}</a>
+                        <ul class="login__profile">
+                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/user/payment') }}">{{ this.params.membership }}</a></li>
+                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/user/index') }}">{{ this.params.my_page }} ({{ app.user.identity.username }})</a></li>
+                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/dialogs/index') }}">{{ this.params.my_messanges }}</a></li>
+                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/user/lots') }}">{{ this.params.my_franchise }}</a></li>
+                           {# <li class="login__profile-item"><a class="login__profile-link" href="/">Продлить франшизу</a></li>
+                            <li class="login__profile-item"><a class="login__profile-link" href="">Популярность франшиз</a></li>#}
+                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/user/bookmarks') }}">{{ this.params.favorites_franchise }}</a></li>
+{#
+                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/user/index') }}">Мои данные</a></li>
+#}
+                            <li class="login__profile-item"><a class="login__profile-link" href="{{ Url.toRoute('/logout') }}">{{ this.params.exit }}</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+                    </div>
+                    <div class="header__langs">
+                        <div class="langs">
+                             {% for l in this.params.langs %}
+                                 {% if l == this.params.lang %}
+                                    <div class="langs__current">{{ l.name|slice(0,3) }}</div>
+                                 {% endif %}
+                             {% endfor %}
+
+
+                            <div class="langs__list">
+                                {% for l in this.params.langs %}
+
+                                <a href="{{ l.langUrl }}"  class="langs__item" >{{ l.name|slice(0,3) }}</a>
+
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header__contacts">
+                        <div class="contact-us">
+                            <div class="contact-us__phone">(044) 000-00-00</div><a class="contact-us__link" href="" data-modal="callback">{{ this.params.callback_request }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header__bottom">
+            <div class="container">
+                <div class="mobile-nav__toggle-wrapper">
+                    <div class="js-nav-toggle mobile-nav__toggle"><span class="icon-nav">toggle menu</span></div>
+                </div>
+                <!-- MENU-->
+                <nav class="mobile-nav">
+                    <div class="mobile-nav__inner">
+                        <div class="mobile-nav__block">
+                            <ul class="mobile-nav__list">
+                                <li class="mobile-nav__item"><a class="mobile-nav__link" href="{{ Url.toRoute('/about') }}">Об ассоциации</a></li>
+                                <li class="mobile-nav__item"><a class="mobile-nav__link" href="{{ Url.toRoute('/sell-franchise') }}">Развиваю франшизу</a></li>
+                                <li class="mobile-nav__item"><a class="mobile-nav__link" href="{{ Url.toRoute('/find-franchise') }}">Ищу франшизу</a></li>
+                                <li class="mobile-nav__item is--active"><a class="mobile-nav__link" href="{{ Url.toRoute('/category') }}">Каталог франшиз</a>
+                                    {{ mobile_menu_widget() }}
+                                </li>
+                                <li class="mobile-nav__item"><a class="mobile-nav__link" href="{{ Url.toRoute('/court') }}">Третейский суд</a></li>
+                                <li class="mobile-nav__item"><a class="mobile-nav__link" href="{{ Url.toRoute('/contacts') }}">Контакты</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <nav class="nav">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a class="nav__link" href="{{ Url.toRoute('/about') }}">{{ this.params.about }}</a></li>
+                        <li class="nav__item"><a class="nav__link" href="{{ Url.toRoute('/find-franchise') }}">{{ this.params.search_one_franchise }}</a></li>
+                        <li class="nav__item"><a class="nav__link" href="{{ Url.toRoute('/sell-franchise') }}">{{ this.params.update_franchise }}</a></li>
+                        <li class="nav__item"><a class="nav__link" href="{{ Url.toRoute('/category') }}">{{ this.params.catalog }}</a>
+                            <div class="nav__submenu">
+                                {{ head_menu_widget() }}
+                            </div>
+                        </li>
+
+                        <li class="nav__item"><a class="nav__link" href="{{ Url.toRoute('/court') }}">{{ this.params.court }}</a></li>
+                        <li class="nav__item"><a class="nav__link" href="{{ Url.toRoute('/contacts') }}">{{ this.params.contacts }}</a></li>
+                    </ul>
+                </nav>
+                <div class="search search--mobile">
+                    <form class="search__form" action="/search/request" method="post">
+                        <input class="search__input" type="text" placeholder="Поиск франшизы">
+                        <button class="search__submit" type="submit"><i class="icon-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+        {{ content | raw }}
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__about"><a class="logo" href=""><img src="/images/logo.png" alt=""></a>
+                <div class="logo__text">{{ this.params.logo_text }}</div>
+                <div class="social-icons"><a class="social-icons__link" href=""><i class="fa fa-facebook"></i></a><a class="social-icons__link" href=""><i class="fa fa-twitter"></i></a><a class="social-icons__link" href=""><i class="fa fa-google-plus"></i></a><a class="social-icons__link" href=""><i class="fa fa-instagram"></i></a></div>
+            </div>
+            <div class="footer__menu">
+                <ul class="menu">
+                    <li class="menu__item"><a class="menu__link" href="{{ Url.toRoute('/sell-franchise') }}">{{ this.params.update_franchise }}</a></li>
+                    <li class="menu__item"><a class="menu__link" href="{{ Url.toRoute('/find-franchise') }}">{{ this.params.search_one_franchise }}</a></li>
+                    <li class="menu__item"><a class="menu__link" href="{{ Url.toRoute('/about') }}">{{ this.params.about }}</a></li>
+                    <li class="menu__item"><a class="menu__link" href="{{ Url.toRoute('/category') }}">{{ this.params.catalog }}</a></li>
+                    <li class="menu__item"><a class="menu__link" href="{{ Url.toRoute('/membership') }}">{{ this.params.membership }}</a></li>
+                    <li class="menu__item"><a class="menu__link" href="{{ Url.toRoute('/court') }}">{{ this.params.court }}</a></li>
+                    <li class="menu__item"><a class="menu__link" href="{{ Url.toRoute('/contacts') }}">{{ this.params.contacts }}</a></li>
+                </ul>
+            </div>
+            <div class="footer__menu">
+                <ul class="menu">
+                    {% if not(app.user.isGuest) %}
+                    <li class="menu__item"><a class="menu__link" href="{{ Url.toRoute('/user/index') }}">{{ this.params.page }}</a></li>
+                    <li class="menu__item"><a class="menu__link" href="{{ Url.toRoute('/user/lots') }}">{{ this.params.my_franchise }}</a></li>
+                    <li class="menu__item"><a class="menu__link" href="{{ Url.toRoute('/user/bookmarks') }}">{{ this.params.favorites_franchise }}</a></li>
+                   {# <li class="menu__item"><a class="menu__link" href="">Помощь</a></li>#}
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="footer__subscribe">
+                <div class="subscribe">
+                    <h4 class="subscribe__title">{{ this.params.messs }}</h4>
+                    <form class="subscribe__form" id="messaging" action="">
+                        <input class="subscribe__input" type="email" name="email" placeholder="Введите email">
+                        <button class="subscribe__submit" type="submit">{{ this.params.podpisatsa }}</button><span class="note note--success is--ml-20 js-messaging-status"></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div style="display: none;">
+        <div class="popup" id="registration">
+            <div class="popup__close arcticmodal-close"></div>
+            <div class="popup__inner">
+                <h4 class="popup__header">{{ this.params.quick_regist }}</h4>
+                <div class="popup__body">
+                    <form class="form" id="sign-up" method="post" action="/auth/sign-up">
+                        <div class="form__field is--required">
+                            <label class="label">{{ this.params.your_name }}</label>
+                            <input class="input" type="text" name="username" >
+                        </div>
+                        <div class="form__field is--required">
+                            <label class="label">Пароль</label>
+                            <input class="input" type="password" name="password" >
+                        </div>
+                        <div class="form__field is--required">
+                            <label class="label">Ваш e-mail</label>
+                            <input class="input" type="email" name="email" >
+                        </div>
+                        <div class="form__field">
+                            <label class="label">Ваш телефон</label>
+                            <input class="input" type="text" name="phone" >
+                        </div>
+                        <div class="form__field">
+                            <label class="label">Откуда вы?</label>
+                            <input class="input" type="text" name="city" >
+                        </div>
+                        <div class="form__field">Я — продавец франшизы (франчайзер)<span class="checkbox__wrapper">
+                  <input class="checkbox" type="radio" name="seller"  id="yes" checked>
+                  <label for="yes">Да</label></span><span class="checkbox__wrapper">
+                  <input class="checkbox" type="radio" name="seller" id="no">
+                  <label for="no">Нет</label></span></div>
+                        <div class="form__field">Регистрируясь на сайте, вы подтверждаете, что ознакомились и приняли <a href="">пользовательское соглашение</a></div>
+                        <div class="form__action">
+                            <button class="btn btn--primary btn--md" type="submit">Зарегистрироваться</button><div class="note note--success  js-answer-status"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="popup" id="callback">
+            <div class="popup__close arcticmodal-close"></div>
+            <div class="popup__inner">
+                <h4 class="popup__header">Заказать звонок</h4>
+                <div class="popup__body">
+                    <form class="form" id="call" >
+                        <div class="form__field is--required">
+                            <label class="label" >{{ this.params.your_name }}</label>
+                            <input class="input" type="text" name="name">
+                        </div>
+                        <div class="form__field">
+                            <label class="label">Ваш телефон</label>
+                            <input class="input" type="text" name="phone">
+                        </div>
+                        <div class="form__action">
+                            <button class="btn btn--primary btn--md" type="submit">Отправить</button><span class="note note--success is--ml-20 js-callback-status"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="popup" id="question">
+            <div class="popup__close arcticmodal-close"></div>
+            <div class="popup__inner">
+                <h4 class="popup__header">Задать вопрос</h4>
+                <div class="popup__body">
+                    <form class="form js-form-question" id="message" action="/dialogs/send-message" method="post">
+                        <div class="form__field is--required">
+                            <label class="label">Имя</label>
+                            <input class="input" type="text" name="name" id="name" value="{{ app.user.identity.username }}">
+                        </div>
+                        <div class="form__field is--required">
+                            <label class="label">Вопрос</label>
+                            <textarea class="textarea" name="question" id="quest" cols="30" rows="10"></textarea>
+                        </div>
+                        <input type="hidden" name="dialog_id" id="dialog_id">
+                        <div class="form__action">
+                            <button class="btn btn--primary btn--md" type="submit">Отправить</button><span class="note note--success is--ml-20 js-answer-status"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="popup" id="answer">
+            <div class="popup__close arcticmodal-close"></div>
+            <div class="popup__inner is--wide">
+                <h4 class="popup__header">Ответить на сообщение</h4>
+                <div class="popup__body">
+                    <form class="form js-form-answer" id="answers" action="">
+                        <div class="form__field is--required">
+                            <label class="label">Сообщение</label>
+                            <textarea class="textarea" name="ans" id="ans" cols="30" rows="10"></textarea>
+                            <input type="hidden" name="answer_id" id="answer_id">
+                        </div>
+
+                        <div class="form__action">
+                            <button class="btn btn--primary btn--md" type="submit">Отправить</button><span class="note note--success is--ml-20 js-answer-status"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="popup" id="login">
+            <div class="popup__close arcticmodal-close"></div>
+            <div class="popup__inner ">
+                <h4 class="popup__header">Войти</h4>
+                <div class="popup__body">
+                    <form class="form js-form-login" id="login" action="/auth/sign-in" method="post">
+                        <div class="form__field is--required">
+                            <label class="label">Ваш e-mail</label>
+                            <input class="input" type="text" name="email" id="email">
+                        </div>
+                        <div class="form__field is--required">
+                            <label class="label">Пароль</label>
+                            <input class="input" type="password" name="password" id="password">
+                        </div>
+                        <div class="form__action">
+                            <button class="btn btn--primary btn--md" type="submit">Отправить</button><span class="note note--success is--ml-20 js-answer-status"></span>
+                        </div>
+                        <div class="section__action"><a data-modal="registration" href="">Регистрация</a>  <a href="{{ Url.toRoute('/reset') }}">Забыли пароль</a></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+                        
+    {{ this.endBody }}
+    {% if this.params.edit_script %}
+        {{ this.params.script|raw }}
+    {% endif %}
+  </body>
+</html>
+{{ this.endPage }}

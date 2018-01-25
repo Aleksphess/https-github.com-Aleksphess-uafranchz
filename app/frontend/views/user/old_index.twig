@@ -1,0 +1,76 @@
+{{ use('frontend/widgets/NewsWidget') }}
+{{ use('frontend/widgets/Advantages') }}
+<section class="section section--profile">
+    <div class="container">
+        <h2 class="section__title is--align-left">Мои данные</h2>
+        <div class="section__content">
+            <form class="form row" action="/user/change-settings" id="change-settings" method="post" enctype="multipart/form-data">
+                <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                    <div class="form__upload is--mb-40">
+                        <label class="form__upload-img" for="file-11"><img src="{{ app.user.identity.getImg().bimg }}" alt="" data-upload="file-11"></label>
+                        <input class="form__upload-file" id="file-11" type="file" name="file-11">
+                        <label class="form__upload-label" for="file-11">Изменить фото</label>
+                    </div>
+                </div>
+                <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                    <div class="form__field is--required">
+                        <label class="label">Имя и фамилия</label>
+                        <input class="input" type="text" value="{{ app.user.identity.username }}" name="username">
+                    </div>
+                    <div class="form__field">
+                        <label class="label">Дата рождения</label>
+                        <input class="input" type="text" value="{{ app.user.identity.birth_day }}" name="date" >
+                    </div>
+                    <div class="form__field is--required">
+                        <label class="label">E-mail</label>
+                        <input class="input" type="email" value="{{ app.user.identity.email }}" name="email" >
+                    </div>
+                    <div class="form__field">
+                        <label class="label">Телефон</label>
+                        <input class="input" type="text" value="{{ app.user.identity.phone }}" name="phone">
+                    </div>
+                    <div class="form__field is--required">
+                        <label class="label">Страна</label>
+                        <input class="input" type="text" value="{{ app.user.identity.country }}" name="country">
+                    </div>
+                </div>
+                <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                    <div class="form__field is--required">
+                        <label class="label">Тип аккаунта</label>
+                        <select class="select" name="user_category">
+                            <option {% if app.user.identity.parent_id==1 %} selected {% endif %} value="1">Продаю франшизу</option>
+                            <option {% if app.user.identity.parent_id==2 %} selected {% endif %} value="2">Покупаю франшизу</option>
+                        </select>
+                    </div>
+                    <div class="form__field">
+                        <label class="label">Пол</label>
+                        <input class="input" type="text" value="{{ app.user.identity.gender }}" name="gender">
+                    </div>
+                    <div class="form__field">
+                        <label class="label">Сайт</label>
+                        <input class="input" type="text" value="{{ app.user.identity.site }}" name="site">
+                    </div>
+                    <div class="form__field">
+                        <label class="label">Skype</label>
+                        <input class="input" type="text" value="{{ app.user.identity.skype }}" name="skype">
+                    </div>
+                    <div class="form__field is--required">
+                        <label class="label">Город</label>
+                        <input class="input" type="text" value="{{ app.user.identity.city }}" name="city">
+                    </div>
+                </div>
+                <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                    <div class="form__field">
+                        <label class="label">Обо мне</label>
+                        <textarea class="textarea"  cols="30" rows="10" name="about" id="about">{{ app.user.identity.about }}</textarea>
+                    </div>
+                    <div class="form__action">
+                        <button class="btn btn--primary btn--md" type="submit">Изменить</button><span class="note note--success is--ml-20 js-answer-status"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{{ advantages_widget() }}
+{{ news_widget_widget() }}

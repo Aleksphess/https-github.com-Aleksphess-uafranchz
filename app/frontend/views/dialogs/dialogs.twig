@@ -1,0 +1,28 @@
+{{ use('frontend/widgets/NewsWidget') }}
+{{ use('frontend/widgets/Advantages') }}
+{{ use('frontend/widgets/User') }}
+<section class="section section--profile">
+    <div class="container">
+        {{ user_widget() }}
+
+        <h2 class="section__title is--align-left">Мои сообщения</h2>
+        <div class="section__content">
+            {% for dialog in dialogs %}
+            <div class="message js-delete-{{ dialog.id }}">
+                <div class="message__inner">
+                    <div class="message__author"><img src="images/avatar.png" alt=""></div>
+                    <div class="message__content">
+                        <div class="message__details"><a class="message__author" href="">{{ dialog.from.username }}</a><span class="message__date">{{ dialog.creation_time|date("d.m.Y") }} – Украина, Киев</span></div>
+                        <div class="message__text">{{ dialog.text }}</div>
+                        <div class="message__contacts"><a class="message__link" href="mailto:{{ dialog.from.email }}">{{ dialog.from.email }}</a><a class="message__phone" href="tel:{{ dialog.from.phone }}">{{ dialog.from.phone }}</a></div>
+                        <div class="message__action"><a class="message__link js-write-answer" data-modal="answer" data-id="{{ dialog.id }}" href="">Ответить</a><a class="message__link js-delete-message" data-id="{{ dialog.id }}" href="">Удалить</a><a class="message__link js-delete-text-{{ dialog.id }}" ></a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+{{ advantages_widget() }}
+{{ news_widget_widget() }}

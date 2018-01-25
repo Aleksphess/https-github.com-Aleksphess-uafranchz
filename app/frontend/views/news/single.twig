@@ -1,0 +1,18 @@
+{{ use('frontend/widgets/NewsWidget') }}
+{{ use('frontend/widgets/Advantages') }}
+
+<div class="container">
+    <nav class="breadcrumbs"><a class="breadcrumbs__item" href="">Главная</a><a class="breadcrumbs__item" href="">Новости</a><a class="breadcrumbs__item is--current" href="">Товарищи! рамки и место обучения кадров позволяет оценить значение модели развития.</a>
+    </nav>
+</div>
+<section class="section section--catalog">
+    <div class="container"><span class="is--text-tiny">{{ post.custom_date }}</span>
+        <h2 class="section__title is--align-left">{{ post.info.title }}</h2>
+        <div class="section__content">
+            <p class="is--mb-20"><img src="{{ post.bimg }}" alt=""></p>
+            {{ post.info.text }}
+        </div>
+    </div>
+</section>
+{{ advantages_widget() }}
+{{ news_widget_widget() }}

@@ -1,0 +1,10 @@
+{%  for m in menu %}
+    {% if loop.index%8==1 %}
+        <ul class="nav__submenu-list">
+    {% endif %}
+        <li class="nav__submenu-item"><a class="nav__submenu-link" href="{{ m.url }}">{{ m.info.name }}</a></li>
+
+    {% if loop.index%8==0 or loop.last %}
+        </ul>
+    {% endif %}
+{% endfor %}

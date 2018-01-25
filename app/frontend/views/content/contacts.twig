@@ -1,0 +1,37 @@
+{{ use('frontend/widgets/NewsWidget') }}
+{{ use('frontend/widgets/Advantages') }}
+<section class="section section--contacts">
+    <div class="container">
+        <h2 class="section__title is--align-left">Контакты</h2>
+        <div class="section__content">
+            <p class="is--text-lg">Телефон: +38 (066) 000-00-00<br>Адрес: г. Киев, ул. Лютеранская 3 оф.56</p>
+            <div class="map"><img src="/images/map.jpg" alt=""></div>
+            <form class="form row" id="cont" action="">
+                <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                    <div class="form__title">Задать вопрос</div>
+                </div>
+                <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                    <div class="form__field is--required">
+                        <label class="label">Имя и фамилия</label>
+                        <input class="input" type="text" name="name">
+                    </div>
+                    <div class="form__field is--required">
+                        <label class="label">Ваш e-mail</label>
+                        <input class="input" type="email" name="email">
+                    </div>
+                </div>
+                <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                    <div class="form__field is--required">
+                        <label class="label">Вопрос</label>
+                        <textarea class="textarea" name="text" cols="30" rows="10"  id="text"></textarea>
+                    </div>
+                    <div class="form__action">
+                        <button class="btn btn--primary btn--md" type="submit">Отправить</button><span class="note note--success is--ml-20 js-contact-status"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{{ advantages_widget() }}
+{{ news_widget_widget() }}

@@ -1,0 +1,5 @@
+<ul class="mobile-nav__sublist">
+{%  for m in menu %}
+        <li class="mobile-nav__sublist-item"><a class="mobile-nav__sublist-link" href="{{ m.url }}">{{ m.info.name }}</a></li>
+{% endfor %}
+</ul>

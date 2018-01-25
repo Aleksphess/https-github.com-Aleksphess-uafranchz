@@ -1,0 +1,185 @@
+<section class="section section--profile">
+    <div class="container">
+        <h2 class="section__title is--align-left">Добавить новую франшизу</h2>
+    </div>
+    <div class="section__content">
+        <div class="tabs js-tabs">
+
+            <div class="container">
+                <div class="tabs__content is--active js-tabs-content" id="general">
+                    <form class="form row js-form-franchise-general" action="/lots/save-lot" method="post">
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="form__field is--required">
+                                <label class="label">Имя и фамилия</label>
+                                <input class="input" type="text" name="name">
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <p> <strong>Укажите преимущества вашей франшизы:</strong></p>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Преимущество №1</label>
+                                <input class="input" type="text" name="advantage_1">
+                            </div>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Преимущество №2</label>
+                                <input class="input" type="text" name="advantage_2">
+                            </div>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Преимущество №3</label>
+                                <input class="input" type="text" name="advantage_3">
+                            </div>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Преимущество №4</label>
+                                <input class="input" type="text" name="advantage_4">
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field form__field--select">
+                                <label class="label">Страна происхождения</label>
+                                <select class="select" name="country">
+                                    {% for c in country %}
+                                    <option value="{{ c.id }}">{{ c.info.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form__field form__field--select">
+                                <label class="label">Сфера бизнеса</label>
+                                <select class="select" name="business">
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.info.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col col--6-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                                    <div class="form__field">
+                                        <label class="label">Cобственные точки</label>
+                                        <input class="input" type="text" name="own_business">
+                                    </div>
+                                </div>
+                                <div class="col col--6-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                                    <div class="form__field">
+                                        <label class="label">Франчайзинговые точки</label>
+                                        <input class="input" type="text" name="franchise_business">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">В каких регионах продается франшиза?</label>
+                                <ul class="list">
+                                    <li class="list__item">
+                                        <div class="list__item-left">Россия</div>
+                                        <div class="list__item-right"> <span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="rus" id="rusYes" value="1" checked>
+                            <label for="rusYes">Да</label></span><span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="rus" id="rusNo" value="0">
+                            <label for="rusNo">Нет</label></span></div>
+                                    </li>
+                                    <li class="list__item">
+                                        <div class="list__item-left">Украина</div>
+                                        <div class="list__item-right"> <span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="ukr" id="ukrYes" value="1" checked>
+                            <label for="ukrYes">Да</label></span><span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="ukr" id="ukrNo" value="0">
+                            <label for="ukrNo">Нет</label></span></div>
+                                    </li>
+                                    <li class="list__item">
+                                        <div class="list__item-left">Казахстан</div>
+                                        <div class="list__item-right"> <span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="kaz" id="kazYes" value="1" checked>
+                            <label for="kazYes">Да</label></span><span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="kaz" id="kazNo" value="0">
+                            <label for="kazNo">Нет</label></span></div>
+                                    </li>
+                                    <li class="list__item">
+                                        <div class="list__item-left">Беларусь</div>
+                                        <div class="list__item-right"> <span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="blr" id="blrYes" value="1" checked>
+                            <label for="blrYes">Да</label></span><span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="blr" id="blrNo" value="0">
+                            <label for="blrNo">Нет</label></span></div>
+                                    </li>
+                                    <li class="list__item">
+                                        <div class="list__item-left">Молдова</div>
+                                        <div class="list__item-right"> <span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="mda" id="mdaYes" value="1" checked>
+                            <label for="mdaYes">Да</label></span><span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="mda" id="mdaNo" value="0">
+                            <label for="mdaNo">Нет</label></span></div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="form__field">
+                                <label class="label">Другие регионы</label>
+                                <input class="input" type="text" name="countries">
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Количество сотрудников</label>
+                                <input class="input" type="text" name="worker_min">
+                                <label class="label is--empty"></label>
+                                <input class="input" type="text" name="worker_max">
+                            </div>
+                            <div class="form__field">
+                                <label class="label">Необходимая площадь, м²</label>
+                                <input class="input" type="text" name="area_min">
+                                <label class="label is--empty"></label>
+                                <input class="input" type="text" name="area_max">
+                            </div>
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12">
+                            <div class="form__field">
+                                <label class="label">Требования к помещению и партнеру</label>
+                                <textarea class="textarea is--large" name="requirements" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <p>Подробно расскажите о своей франшизе. Рекомендуем упомянуть:</p>
+                            <ul>
+                                <li>Краткую историю марки</li>
+                                <li>Описание товара или услуги</li>
+                                <li>Ваши конкурентные преимущества перед другими франшизами</li>
+                            </ul>
+                            <p><strong>Внимание! Общий объем качественно написанного текста должен составлять не менее 1000 знаков.</strong></p>
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12">
+                            <div class="form__field">
+                                <label class="label">Подробное описание франшизы</label>
+                                <textarea class="textarea is--large" name="description" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="form__action">
+                                <button class="btn btn--primary btn--md" type="submit">Сохранить</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,20 @@
+{{ use('frontend/widgets/NewsWidget') }}
+{{ use('frontend/widgets/Advantages') }}
+<div class="container">
+    <nav class="breadcrumbs"><a class="breadcrumbs__item" href="{{ Url.home() }}">Главная</a><a class="breadcrumbs__item is--current" href="">Страница не найдена</a>
+    </nav>
+</div>
+<section class="section section--page">
+    <div class="container">
+        <h2 class="section__title is--align-left">Страница не найдена</h2>
+        <div class="section__content">
+            <div class="p404">
+                <div class="p404__title">404</div>
+                <div class="p404__text">Неправильно набран адрес, <br>или такой страницы на сайте больше не существует.</div>
+                <div class="p404__action"><a href="{{ Url.home() }}">Вернитесь на главную</a></div>
+            </div>
+        </div>
+    </div>
+</section>
+{{ advantages_widget() }}
+{{ news_widget_widget() }}

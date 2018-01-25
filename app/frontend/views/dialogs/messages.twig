@@ -1,0 +1,107 @@
+{{ use('frontend/widgets/CabinetMenu') }}
+{{ use('frontend/assets/CheckGivenContactsAsset') }}
+{{ register_check_given_contacts_asset(this) }}    
+
+<section class="section_bookmarks">
+    <div class="container">
+        <header class="section__header section__header_catalog">
+            <h2>Сообщения</h2>
+        </header>
+        <div class="row">
+            <div class="col-lg-3 col-lg-push-9 col-md-3 col-md-push-9 col-sm-4 col-sm-push-8 col-xs-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ cabinet_menu_widget() }}
+                    </div>
+                    <div class="col-sm-12 hidden-xs">
+                        <img src="/img/banner2.jpg" alt="" class="img-responsive bananer">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-lg-pull-3 col-md-9 col-md-pull-3 col-sm-8 col-sm-pull-4 col-xs-12">
+                <div class="ad__conversation">
+                    <article class="ad_my">
+                        <div class="row">
+                            <aside class="col-sm-3">
+                                <img src="{{ dialog.lot.simg }}" alt="{{ dialog.lot.name | raw }}" class="img-responsive ad__img_my">
+                            </aside>
+                            <div class="col-sm-9">
+                                <div class="adMy__content">
+                                    <header>
+                                        <time datetime="2017-12-23 23:00">{{ dialog.lot.humanCreationDate | raw }}</time>
+                                        <h4><a href="{{ dialog.lot.url}}">{% if dialog.lot.is_need %} Я хочу купить {% else %}Я предлагаю&#32; {% endif %}<span class="ad__title">{{ dialog.lot.name | raw }}</span></a></h4>
+                                        <span class="ad_adress">{{ dialog.lot.locality.name_ru | raw }} {{ dialog.lot.address | raw }}</span>
+                                    </header>
+                                    <p>{{ dialog.lot.text | slice(0, 150) | raw }}</p>
+                                    <p class="dialog_contacts">
+                                        {% if app.user.identity.id == dialog.lot_owner and dialog.show_interlocutor_contacts %}
+                                            Собеседник предоставил Вам свои контактные жданные: <strong>{{ dialog.interlocutor.username }}, {{ dialog.interlocutor.phone }}</strong>
+                                        {% elseif app.user.identity.id != dialog.lot_owner and dialog.show_owner_contacts %}
+                                            Собеседник предоставил Вам свои контактные жданные: <strong>{{ dialog.lotOwner.username }}, {{ dialog.lotOwner.phone }}</strong>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <div class="ad__messages" data-dialog="{{ dialog.id }}">
+                        {% for msg in dialog.messages %}
+                            {% if app.user.identity.id == msg.user_from %} 
+                                <div class="wrap_message">
+                                    <div class="ad__message message_request">
+                                        <div class="message__content">
+                                            <span class="message__date">{{ msg.humanCreationDate }}</span>
+                                            <p class="message__text">{{ msg.text | raw }}</p>
+                                        </div>
+                                        <aside>
+                                            <img src="/img/user.svg" class="message__avatar">
+                                        </aside>
+                                    </div>
+                                </div>
+                            {% else %} 
+                                <div class="wrap_message">
+                                    <div class="ad__message message_respond">
+                                        <aside>
+                                            <img src="/img/user.svg" class="message__avatar">
+                                        </aside>
+                                        <div class="message__content">
+                                            <span class="message__date">{{ msg.humanCreationDate }}</span>
+                                            <p class="message__text">{{ msg.text | raw }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <form class="message_send" id="message_send">
+                        <textarea id="message" placeholder="Ваше сообщение..." name="message" required></textarea>
+                        <input type="hidden" name="lot_id" value="{{ dialog.lot.id }}">
+                        <input type="hidden" name="lot_owner" value="{{ dialog.lot_owner }}">
+                        {% if app.user.identity.id == dialog.lot_owner %}
+                            <input type="hidden" name="user_to" value="{{ dialog.interlocutor_id }}">
+                        {% else %}
+                            <input type="hidden" name="user_to" value="{{ dialog.lot_owner }}">
+                        {% endif %}
+                        <input type="hidden" name="{{ app.request.csrfParam }}" value="{{ app.request.csrfToken }}"> 
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </form>
+                </div>
+                <div>Контактные данные: </div>
+                <div>
+                    {% if app.user.identity.id == dialog.lot_owner %}
+                        <input type="radio" class="radio sr-only" value="0" id="hide_contact" name="show_contact" {% if not dialog.show_owner_contacts %} checked {% endif %} required>
+                        <label class="label_radio" for="hide_contact">Скрыть</label>
+                        <input type="radio" class="radio sr-only" value="1" id="show_contact" name="show_contact" {% if dialog.show_owner_contacts %} checked {% endif %} required>
+                        <label class="label_radio" for="show_contact">Показать</label>
+                    {% else %}
+                        <input type="radio" class="radio sr-only" value="0" id="hide_contact" name="show_contact" {% if not dialog.show_interlocutor_contacts %} checked {% endif %} required>
+                        <label class="label_radio" for="hide_contact">Скрыть</label>
+                        <input type="radio" class="radio sr-only" value="1" id="show_contact" name="show_contact" {% if dialog.show_interlocutor_contacts %} checked {% endif %} required>
+                        <label class="label_radio" for="show_contact">Показать</label>
+                    {% endif %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

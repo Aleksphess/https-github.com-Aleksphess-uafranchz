@@ -1,0 +1,95 @@
+{{ use('frontend/widgets/Sbreadcrumbs') }}
+{{ use('frontend/widgets/SLinkPager') }}
+{{ use('frontend/widgets/NewsWidget') }}
+{{  use('frontend/widgets/Advantages') }}
+
+<div class="container">
+    <nav class="breadcrumbs"><a class="breadcrumbs__item" href="{{ Url.home() }}">Главная</a><a class="breadcrumbs__item is--current" href="{{ Url.to('category') }}">Каталог франшиз</a><a class="breadcrumbs__item is--current" href="{{ category.url }}">{{ category.info.name }}</a>
+    </nav>
+</div>
+<section class="section section--catalog">
+    <div class="container">
+        <h2 class="section__title is--align-left">Каталог франшиз</h2>
+        <form class="form row" action="/filter" method="get">
+                    <div class="col col--11-of-12 col--s-12-of-12 col--m-10-of-12 col--l-11-of-12 col--am">
+                      <div class="sort__items row">
+                        <div class="sort__item col col--4-of-12 col--s-12-of-12 col--m-4-of-12">
+                          <div class="form__field form__field--select">
+                            <select class="select" name="investments">
+                                {% for i in invest %}
+                              <option value="{{ i.from }}-{{ i.to }} " {% if filter.invest_min==i.from  %} selected {% endif %} >Размер инвестиций от {{ i.from }} до {{ i.to }} </option>
+                                {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                        <div class="sort__item col col--4-of-12 col--s-12-of-12 col--m-4-of-12">
+                          <div class="form__field form__field--select">
+                            <select class="select" name="region">
+                                {% for c in country %}
+                                    <option value="{{ c.id }}" {% if filter.country_id==c.id %} selected {% endif %}>{{ c.info.title }}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                        <div class="sort__item col col--4-of-12 col--s-12-of-12 col--m-4-of-12">
+                          <div class="form__field form__field--select">
+                            <select class="select" name="sort_by">
+                              <option value="ask" {% if filter.sort=='ask' %} selected {% endif %} >Возрастанию</option>
+                              <option value="desc" {% if filter.sort=='desc' %} selected {% endif %}>Убыванию</option>
+                            </select>
+                              <input type="hidden" name="category" value="{{ category.alias }}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col col--1-of-12 col--s-12-of-12 col--m-2-of-12 col--l-1-of-12 col--am">
+                      <div class="sort__action">
+                        <button class="btn btn--primary" type="submit">Искать </button>
+                      </div>
+                    </div>
+                  </form>
+        <hr class="section__divider is--invert">
+        <div class="section__content">
+            <div class="row">
+                {% for lot in lots %}
+                <div class="col col--4-of-12 col--s-12-of-12 col--m-6-of-12 col--l-4-of-12">
+                    <article class="franch">
+                        <div class="franch__inner">
+                            <div class="franch__photo"><img src="{{ lot.bimg }}" alt=""></div>
+                            <div class="franch__details">
+                                <div class="franch__brands"><img src="{{ lot.minilogo }}" alt=""></div>
+                                <h3 class="franch__title"> <a href="{{ lot.url }}">{{ lot.name }}</a></h3>
+                                <div class="franch__row">
+                                    <div class="franch__investments"><i class="icon-money"></i><span><span>Инвестиции</span>{{ lot.invest }} грн.</span></div>
+                                    <div class="franch__payback"><i class="icon-calendar"></i><span><span>Окупаемость</span>{{ lot.occupation }}</span></div>
+                                </div>
+                                <div class="franch__row">
+                                    <div class="franch__views"><i class="icon-view"></i>{{ lot.views_count }} просмотров</div>
+                                    <div class="franch__action"><a class="btn" href="{{ lot.url }}">Посмотреть</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        <div class="section__action">
+
+        {{ s_link_pager_widget({
+            'pagination' : pages,
+            'maxButtonCount' : 5,
+            'options' : {
+                'class' : 'pagination',
+            },
+            'linkOptions' : {
+                'class' : '',
+            },
+        }) }}</div>
+
+
+    </div>
+</section>
+{{ advantages_widget() }}
+{{ news_widget_widget() }}

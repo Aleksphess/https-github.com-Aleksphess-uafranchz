@@ -1,0 +1,616 @@
+<section class="section section--profile">
+    <div class="container">
+        <h2 class="section__title is--align-left">Редактировать франшизу</h2>
+        <div class="section__text">Размещение вашей франшизы закончится <strong>{{ app.user.identity.date_active }}</strong> <a href="{{ Url.to('/user/payment') }}">Продлить</a> {#<a href="">Поднять популярность</a>#}</div>
+    </div>
+    <div class="section__content">
+        <div class="tabs js-tabs">
+            <div class="tabs__list">
+                <div class="container"><a class="tabs__list-item js-tabs-item is--active" href="#general">Основное</a><a class="tabs__list-item js-tabs-item" href="#cost">Затраты</a><a class="tabs__list-item js-tabs-item" href="#extra">Дополнительно</a><a class="tabs__list-item js-tabs-item" href="#media">Мультимедиа</a><a class="tabs__list-item js-tabs-item" href="#contacts">Контакты</a></div>
+            </div>
+            <div class="container">
+                <div class="tabs__content is--active js-tabs-content" id="general">
+                    <form class="form row js-form-franchise-general" id="general" action="/lots/edit-basic/{{ lot.alias }}" method="post">
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="form__field is--required">
+                                <label class="label">Название франшизы</label>
+                                <input class="input" type="text" name="name" value="{{ lot.name }}">
+                            </div>
+                        </div>
+                        <input type="hidden" name="alias" id="alias" value="{{ lot.alias }}">
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <p> <strong>Укажите преимущества вашей франшизы:</strong></p>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Преимущество №1</label>
+                                <input class="input" type="text" name="advantage_1" value="{{ lot.advantages_1 }}">
+                            </div>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Преимущество №2</label>
+                                <input class="input" type="text" name="advantage_2" value="{{ lot.advantages_2 }}">
+                            </div>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Преимущество №3</label>
+                                <input class="input" type="text" name="advantage_3" value="{{ lot.advantages_3 }}">
+                            </div>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Преимущество №4</label>
+                                <input class="input" type="text" name="advantage_4" value="{{ lot.advantages_4 }}">
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field form__field--select">
+                                <label class="label">Страна происхождения</label>
+                                <select class="select" name="country">
+                                    {% for c in country %}
+                                        <option value="{{ c.id }}"  {% if lot.country_id == c.id %} selected {% endif %}>{{ c.info.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form__field form__field--select">
+                                <label class="label">Сфера бизнеса</label>
+                                <select class="select" name="business">
+                                    {%  for category in categories %}
+                                    <option value="{{ category.id }}" {% if category.id==lot.category_id %}selected{% endif %}>{{ category.info.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col col--6-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                                    <div class="form__field">
+                                        <label class="label">Cобственные точки</label>
+                                        <input class="input" type="text" name="own_business" value="{{ lot.itself_point }}">
+                                    </div>
+                                </div>
+                                <div class="col col--6-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                                    <div class="form__field">
+                                        <label class="label">Франчайзинговые точки</label>
+                                        <input class="input" type="text" name="franchise_business" value="{{ lot.franchise_point }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">В каких регионах продается франшиза?</label>
+                                <ul class="list">
+                                    <li class="list__item">
+                                        <div class="list__item-left">Россия</div>
+                                        <div class="list__item-right"> <span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="rus" id="rusYes" value="1" {% if lot.rus==1 %} checked {% endif %}>
+                            <label for="rusYes">Да</label></span><span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="rus" id="rusNo" value="0" {% if lot.rus==0 %} checked {% endif %}>
+                            <label for="rusNo">Нет</label></span></div>
+                                    </li>
+                                    <li class="list__item">
+                                        <div class="list__item-left">Украина</div>
+                                        <div class="list__item-right"> <span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="ukr" id="ukrYes" value="1" {% if lot.ukr==1 %} checked {% endif %}>
+                            <label for="ukrYes">Да</label></span><span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="ukr" id="ukrNo" value="0" {% if lot.ukr==0 %} checked {% endif %}>
+                            <label for="ukrNo">Нет</label></span></div>
+                                    </li>
+                                    <li class="list__item">
+                                        <div class="list__item-left">Казахстан</div>
+                                        <div class="list__item-right"> <span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="kaz" id="kazYes" value="1" {% if lot.kz==1 %} checked {% endif %}>
+                            <label for="kazYes">Да</label></span><span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="kaz" id="kazNo" value="0" {% if lot.kz==0 %} checked {% endif %}>
+
+                            <label for="kazNo">Нет</label></span></div>
+                                    </li>
+                                    <li class="list__item">
+                                        <div class="list__item-left">Беларусь</div>
+                                        <div class="list__item-right"> <span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="blr" id="blrYes" value="1" {% if lot.bel==1 %} checked {% endif %}>
+                            <label for="blrYes">Да</label></span><span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="blr" id="blrNo" value="0" {% if lot.bel==0 %} checked {% endif %}>
+                            <label for="blrNo">Нет</label></span></div>
+                                    </li>
+                                    <li class="list__item">
+                                        <div class="list__item-left">Молдова</div>
+                                        <div class="list__item-right"> <span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="mda" id="mdaYes" value="1" {% if lot.mol==1 %} checked {% endif %}>
+                            <label for="mdaYes">Да</label></span><span class="checkbox__wrapper">
+                            <input class="checkbox is--small is--right" type="radio" name="mda" id="mdaNo" value="0" {% if lot.mol==0 %} checked {% endif %}>
+                            <label for="mdaNo">Нет</label></span></div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="form__field">
+                                <label class="label">Другие регионы</label>
+                                <input class="input" type="text" name="countries"value="{{ lot.country_for_use }}" >
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Количество сотрудников</label>
+                                <input class="input" type="text" name="worker_min" value="{{ lot.personal_mins }}">
+                                <label class="label is--empty"></label>
+                                <input class="input" type="text" name="worker_max" value="{{ lot.personal_max }}">
+                            </div>
+                            <div class="form__field">
+                                <label class="label">Необходимая площадь, м²</label>
+                                <input class="input" type="text" name="area_min" value="{{ lot.square_min }}">
+                                <label class="label is--empty"></label>
+                                <input class="input" type="text" name="area_max" value="{{ lot.square_max }}">
+                            </div>
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12">
+                            <div class="form__field">
+                                <label class="label">Требования к помещению и партнеру</label>
+                                <textarea class="textarea is--large" name="requirements" cols="30" rows="10" value="{{ lot.requirements_room }}">{{ lot.requirements_room }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <p>Подробно расскажите о своей франшизе. Рекомендуем упомянуть:</p>
+                            <ul>
+                                <li>Краткую историю марки</li>
+                                <li>Описание товара или услуги</li>
+                                <li>Ваши конкурентные преимущества перед другими франшизами</li>
+                            </ul>
+                            <p><strong>Внимание! Общий объем качественно написанного текста должен составлять не менее 1000 знаков.</strong></p>
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12">
+                            <div class="form__field">
+                                <label class="label">Подробное описание франшизы</label>
+                                <textarea class="textarea is--large" name="description" cols="30" rows="10" value="{{ lot.text }}">{{ lot.text }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="form__action">
+                                <button class="btn btn--primary btn--md" type="submit">Сохранить</button><span class="note note--success is--ml-20 js-answer-status-1"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tabs__content js-tabs-content" id="cost">
+                    <form class="form row js-form-franchise-cost" id="costs" action="/lots/edit-cost/{{ lot.alias }}" method="post">
+                        {#<div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field form__field--select">
+                                <label class="label">Выберите валюту</label>
+                                <select class="select" name="currency">
+                                    <option value="uah">Гривны</option>
+                                    <option value="rub">Рубли</option>
+                                    <option value="usd">Доллары</option>
+                                </select>
+                            </div>
+                        </div>#}
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Вступительный взнос, грн.</label>
+                                <input class="input" type="text" name="fee_min" value="{{ lot.contribution_min }}">
+                                <label class="label is--empty"></label>
+                                <input class="input" type="text" name="fee_max" value="{{ lot.contribution_max }}">
+                            </div>
+                            <input type="hidden" name="alias" id="alias-1" value="{{ lot.alias }}">
+                            {#<div class="form__field">
+                                <input class="checkbox is--small" type="checkbox" name="fee" id="fee" value="{{ lot.contribution_is_empty }}">
+                                <label for="fee">Вступительный взнос отсутствует</label>
+                            </div>#}
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12">
+                            <div class="form__field">
+                                <label class="label">Вступительный взнос, грн.</label>
+                                <textarea class="textarea"  id="fee_desc" name="fee_desc" cols="30" rows="10" value="{{ lot.contribution_text }}">{{ lot.contribution_text }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Инвестиции, грн.</label>
+                                <div class="form__field-desc is--alt">Внимание! Инвестиции не должны включать в себя вступительный взнос, указанный выше</div>
+                                <input class="input" type="text" name="investment_min" value="{{ lot.invest_min }}">
+                                <label class="label is--empty"></label>
+                                <input class="input" type="text" name="investment_max" value="{{ lot.invest_max }}">
+                            </div>
+                            {#<div class="form__field">
+                                <input class="checkbox is--small" type="checkbox" name="investment" id="investment">
+                                <label for="investment">Инвестиции указаны за 1 кв. м</label>
+                            </div>
+                            <div class="form__field">
+                                <div class="is--text-small js-investment-calc">Итого, общие затраты:<br><strong>15 802 000 — 110 130 000</strong> грн.</div>
+                            </div>#}
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12">
+                            <div class="form__field">
+                                <label class="label">Что входит в сумму инвестиций?</label>
+                                <div class="form__field-desc">Перечень должен отличаться от того, что указано в поле выше — «Что входит во вступительный взнос?»</div>
+                                <textarea class="textarea is--large-beta" name="investment_desc" id="investment_desc" cols="30" rows="10" value="{{ lot.invest_text }}">{{ lot.invest_text }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Окупаемость, месяцев</label>
+                                <input class="input" type="text" name="return_period_min" value="{{ lot.occupation_min }}">
+                                <label class="label is--empty"></label>
+                                <input class="input" type="text" name="return_period_max" value="{{ lot.occupation_max }}">
+                            </div>
+                            <div class="form__field">
+                                <label class="label">Чистая прибыль в месяц, грн.</label>
+                                <input class="input" type="text" name="return_min" value="{{ lot.profit_min }}">
+                                <label class="label is--empty"></label>
+                                <input class="input" type="text" name="return_max" value="{{ lot.profit_max }}">
+                            </div>
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12">
+                            <div class="form__field">
+                                <label class="label">Дополнительные услуги для франчайзи</label>
+                                <div class="form__field-desc">Услуги, которые не входят во вступительный взнос или сумму инвестиций</div>
+                                <textarea class="textarea is--large-alpha" name="franchise_extras" id="franchise_extras" cols="30" rows="10" value="{{ lot.dop_settings }}">{{ lot.dop_settings }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        {#<div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field form__field--select">
+                                <label class="label">Роялти</label>
+                                <select class="select" name="royalty">
+                                    <option value="0">Процент</option>
+                                    <option value="1">Процент</option>
+                                    <option value="2">Процент</option>
+                                </select>
+                            </div>
+                            <div class="form__field">
+                                <label class="label">Ставка процента</label>
+                                <input class="input" type="text" name="interest_rate">
+                            </div>
+                            <div class="form__field">
+                                <label class="label">База для расчета</label>
+                                <input class="input" type="text" name="calculation">
+                            </div>
+                        </div>#}
+                        {#<div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field form__field--select">
+                                <label class="label">Периодичность уплаты</label>
+                                <select class="select" name="periodicity_payment">
+                                    <option value="0">Раз в месяц</option>
+                                    <option value="1">Раз в месяц</option>
+                                    <option value="2">Раз в месяц</option>
+                                </select>
+                            </div>
+                            <div class="form__field">
+                                <label class="label">Рекламные отчисления</label>
+                                <input class="input" type="text" name="advertising_charges" placeholder="Отсутствуют">
+                            </div>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-12-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Прочие отчисления и платежи (если есть)</label>
+                                <textarea class="textarea is--large-beta" name="franchise_extra" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>#}
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="form__action">
+                                <button class="btn btn--primary btn--md" type="submit">Сохранить</button><span class="note note--success is--ml-20 js-answer-status-2"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tabs__content js-tabs-content" id="extra">
+                    <form class="form row js-form-franchise-extra" id="extras" action="/lots/edit-extra/{{ lot.alias }}" method="post">
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-12-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Владелец франшизы</label>
+                                <input class="input" type="text" name="owner" value="{{ app.user.identity.username }}">
+                            </div>
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Год начала работы</label>
+                                <input class="input" type="text" name="work_year" value="{{ app.user.identity.work_year }}" >
+                            </div>
+                        </div>
+                            <input type="hidden" name="alias" id="alias-2" value="{{ lot.alias }}">
+
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Год начала франчайзинга</label>
+                                <input class="input" type="text" name="franchise_year" value="{{ app.user.identity.franchise_year }}">
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <p> <strong>Города, в которых представлены объекты сети</strong></p>
+                        </div>
+                        <div class="col col--4-of-12 col--s-12-of-12 col--m-12-of-12 col--l-4-of-12">
+                            <div class="form__field">
+                                <label class="label">Города России</label>
+                                <textarea class="textarea is--large" name="rus_cities"  id="rus_cities" cols="30" rows="10" value="{{ lot.city_in_Russia }}" >{{ lot.city_in_Russia }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--4-of-12 col--s-12-of-12 col--m-12-of-12 col--l-4-of-12">
+                            <div class="form__field">
+                                <label class="label">Города Украины</label>
+                                <textarea class="textarea is--large" name="ukr_cities" id="ukr_cities" cols="30" rows="10" value="{{ lot.city_in_Ukraine }}">{{ lot.city_in_Ukraine }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--4-of-12 col--s-12-of-12 col--m-12-of-12 col--l-4-of-12">
+                            <div class="form__field">
+                                <label class="label">Города в других странах мира</label>
+                                <textarea class="textarea is--large" name="other_cities" id="other_cities" cols="30" rows="10" value="{{ lot.other_city }}">{{ lot.other_city }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Стоимость товаров/услуг</label>
+                                <div class="form__field-desc">Средняя стоимость товаров или услуг в вашей сети</div>
+                                <input class="input" type="text" name="services_cost" value="{{ lot.avg_price }}">
+                                <label class="label is--empty"></label>
+                                {#<div class="form__field-desc">Валюту можно изменить на вкладке «Затраты»</div>#}
+                            </div>
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12">
+                            <div class="form__field">
+                                <label class="label">Опишите основные группы товаров или услуг</label>
+                                <textarea class="textarea is--small" name="services_desc" id="services_desc" cols="30" rows="10" value="{{ lot.basic_group }}">{{ lot.basic_group }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Форматы франшизы</label>
+                                <div class="form__field-desc">Опишите различные формы или виды организации франшизы (если они есть)</div>
+                                <textarea class="textarea is--large" name="franchise_formats" id="franchise_formats" cols="30" rows="10" value="{{ lot.format_franchise }}">{{ lot.format_franchise }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--6-of-12 col--s-12-of-12 col--m-6-of-12 col--l-6-of-12">
+                            <div class="form__field">
+                                <label class="label">Прочие условия франшизы</label>
+                                <div class="form__field-desc">Опишите все прочие условия франшизы, которые не были указаны ранее</div>
+                                <textarea class="textarea is--large" name="franchise_conditions" id="franchise_conditions"  cols="30" rows="10" value="{{ lot.else_settings }}">{{ lot.else_settings }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="form__action">
+                                <button class="btn btn--primary btn--md" type="submit">Сохранить</button><span class="note note--success is--ml-20 js-answer-status-3"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tabs__content js-tabs-content" id="media">
+                    <form class="form row js-form-franchise-general" id="fileupload" method="POST" enctype="multipart/form-data">
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12 col--am">
+                            <div class="form__upload">
+                                <label class="form__upload-img" for="logotip"><img src="{% if lot.bimg %}{{ lot.bimg }}{% else %}/images/choose-file.png{% endif %}" alt="" data-upload="logotip"></label>
+                                <input class="form__upload-file" id="logotip" type="file" name="logotip">
+                            </div>
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12 col--am">
+                            <div class="form__field">
+                                <div class="is--text-lg">Закачать новый логотип</div>
+                                <p>Здесь вы можете загрузить только файлы в форматах JPEG, PNG или GIF. Если ваш логотип в другом формате (к примеру, AI, CDR, EPS), пришлите его на адрес logo@franch.biz. Размер логотипа — не менее 180 x 120 px. Логотип не должен содержать посторонних изображений и надписей; в противном случае будет возвращена его исходная версия.</p>
+                                <label class="link" for="logotip">Выбрать файл</label>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="is--text-lg is--mb-20">
+                                Фотографии (<span class="js-photos-qty">{{ lot.photos|length }}</span>)</div>
+                            <!-- media-->
+                            <div class="row" id="filePhotosList">
+                                <!-- The table listing the files available for upload/download-->
+                                <div class="files" role="presentation"></div>
+                            </div>
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <p><strong>Требования к фотографиям:</strong></p>
+                            <ul>
+                                <li>Формат JPEG, размер файла не более 10 Мб</li>
+                                <li>Ширина — не менее 600 px, рекомендуемая — 1200 px</li>
+                                <li>Ваши конкурентные преимущества перед другими франшизами</li>
+                                <li>Важно: фотографии должны быть высокого качества, желательно постановочные, профессионально снятые и обработанные</li>
+                            </ul>
+                            <p>Фотографии, которые не соответствуют требованиям, будут удалены.</p>
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12">
+                            <div class="form__field">
+                                <p><strong>Загрузить новые фотографии</strong></p>
+                                <p>Вы можете разместить еще 21 фото. Файлы, загруженные сверх лимита, будут удалены автоматически.</p>
+                                <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload-->
+                                <div class="fileupload-buttonbar form__upload">
+                                    <label class="form__upload-img" for="photos"><img src="images/choose-file.png" alt="" data-upload="photos"></label>
+                                    <input class="form__upload-file js-media-file" type="file" name="files[]" multiple="" id="photos">
+
+                                </div>
+                                <p>
+                                    <label class="link" for="photos">Выбрать файл</label>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                       {# <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="is--text-lg is--mb-20">Обложка</div><img class="is--mb-20" src="images/cover.jpg" alt="">
+                            <p class="is--text is--mb-40">Если вы хотите заменить обложку франшизы, пожалуйста, пришлите на адрес <a href="mailto: wallpaper@franch.biz">wallpaper@franch.biz</a>одно или несколько изображений размером 1130 х 407 px. Обложка не должна содержать логотипов и текстовых надписей. Это может быть только качественная постановочная фотография, коллаж или фирменный паттерн. Желательно не помещать важные объекты в левой четверти обложки, т.к. в этой области будет находиться логотип и краткая информация о франшизе. Редакция может отклонить присланные макеты, если их качество и содержание не соответствуют правилам сайта.</p>
+                            <div class="is--text-lg is--mb-20">Фон страницы</div>
+                            <p class="is--text is--mb-20">Ваш platinum-аккаунт позволяет разместить индивидуальный фон на странице франшизы. Пожалуйста, пришлите на адрес <a href="mailto: wallpaper@franch.biz">wallpaper@franch.biz</a>одно или несколько изображений размером 1920 х 1200 px. Так как на странице франшизы будет видна только правая и левая часть фона, размещайте важные объекты именно по бокам (по 385 px с каждой стороны), а не в центре изображения, т.к. центр будет скрыт основным контентом страницы. Изображение должно быть высокого качества.</p>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="is--text-lg is--mb-20 js-videos-qty">
+                                Видеоролики (<span>2</span>)</div>
+                            <!-- media-->
+                            <div class="row">
+                                <div class="col col--4-of-12 col--s-12-of-12 col--m-6-of-12 col--l-4-of-12">
+                                    <div class="media">
+                                        <div class="media__inner">
+                                            <div class="media__cover"><img src="images/media.jpg" alt=""></div>
+                                            <div class="media__action js-remove-media"><span>Удалить</span><i class="icon icon-close-white"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col col--4-of-12 col--s-12-of-12 col--m-6-of-12 col--l-4-of-12">
+                                    <div class="media">
+                                        <div class="media__inner">
+                                            <div class="media__cover"><img src="images/media.jpg" alt=""></div>
+                                            <div class="media__action js-remove-media"><span>Удалить</span><i class="icon icon-close-white"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /media-->
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <p><strong>Правила размещения роликов:</strong></p>
+                            <ul>
+                                <li>Можно добавлять только ролики, размещенные на YouTube или Vimeo.</li>
+                                <li>Рекомендуем разместить ссылки на видеоролики, в которых рассказывается о вашей компании, франшизе, продукте или услуге. </li>
+                                <li>Добавляйте ссылки на страницы с роликами, а не на свои каналы!</li>
+                            </ul>
+                            <p>Ссылки на ролики, которые не соответствуют правилам сайта или нарушают копирайт, будут удалены.</p>
+                        </div>
+                        <div class="col col--9-of-12 col--s-12-of-12 col--m-6-of-12 col--l-9-of-12">
+                            <div class="form__field">
+                                <p><strong>Ссылки на видеоролики</strong></p>
+                                <p>Вы можете добавить ссылки на еще 5 видео с YouTube или Vimeo. Ссылки, загруженные сверх лимита, будут удалены автоматически. Укажите по одной ссылке в каждой строке и нажмите кнопу «Добавить видео».</p>
+                                <textarea class="textarea is--large-gamma" name="description" cols="30" rows="10"></textarea>
+                                <p>
+                                    <label class="link" for="logotip">Выбрать файл</label>
+                                </p>
+                            </div>
+                        </div>#}
+                        <input type="hidden" name="alias-3" id="alias-3" value="{{ lot.alias }}">
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="form__action">
+                                <button class="btn btn--primary btn--md" type="submit">Сохранить</button><span class="note note--success is--ml-20 js-answer-status-4"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tabs__content js-tabs-content" id="contacts">
+                    <form class="row form js-form-franchise-contracts" id="contact" action="">
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Имя</label>
+                                <input class="input" type="text" name="owner_name" value="{{ app.user.identity.username }}">
+                            </div>
+                        </div>
+                        <input type="hidden" name="alias" id="alias-4" value="{{ lot.alias }}">
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">E-mail</label>
+                                <input class="input" type="text" name="email" value="{{ app.user.identity.email }}">
+                            </div>
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Телефон</label>
+                                <input class="input" type="text" name="phone" value="{{ app.user.identity.phone }}">
+                            </div>
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Skype, Viber и т.п.</label>
+                                <input class="input" type="text" name="messanger" value="{{ app.user.identity.skype }}">
+                            </div>
+                        </div>
+                        {#<div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="is--mb-40">
+                                <p class="is--text-lg is--color-primary">+ Города, в которых представлены объекты сети<br>+ Добавить человека</p>
+                            </div>
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Сайт 1</label>
+                                <input class="input" type="text" name="site_1">
+                            </div>
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Сайт 2</label>
+                                <input class="input" type="text" name="site_2">
+                            </div>
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Сайт 3</label>
+                                <input class="input" type="text" name="site_3">
+                            </div>
+                        </div>
+                        <div class="col col--3-of-12 col--s-12-of-12 col--m-6-of-12 col--l-3-of-12">
+                            <div class="form__field">
+                                <label class="label">Сайт 4</label>
+                                <input class="input" type="text" name="site_4">
+                            </div>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <p> <strong>Открытые контакты</strong></p>
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="form__field"><span class="checkbox__wrapper is--no-marging">
+                      <input class="checkbox is--small is--right" type="radio" name="opened" id="openedYes" value="1" checked>
+                      <label for="openedYes">Да</label></span><span class="checkbox__wrapper">
+                      <input class="checkbox is--small is--right" type="radio" name="opened" id="openedNo" value="0">
+                      <label for="openedNo">Нет</label></span></div>
+                            <div class="form__field">
+                                <p>Нет — Это рекомендуемое значение. Чтобы открыть вашу контактную информацию, пользователю сайта необходимо пройти быструю регистрацию или войти через социальную сеть. Обычно это занимает несколько секунд, и позволяет вам отслеживать и сохранять данные пользователей, которые интересуются вашей франшизой.</p>
+                                <p>Да — Вашу контактную информацию (кроме e-mail) видят все посетители сайта без обязательной авторизации. Данная опция относится только к сайту franch.biz. Даже с открытыми контактами посетителю все равно нужно авторизоваться, чтобы написать вам сообщение или комментарий.</p>
+                            </div>
+                        </div>#}
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <hr class="form__divider">
+                        </div>
+                        <div class="col col--12-of-12 col--s-12-of-12 col--m-12-of-12 col--l-12-of-12">
+                            <div class="form__action">
+                                <button class="btn btn--primary btn--md" type="submit">Сохранить</button><span class="note note--success is--ml-20 js-answer-status-5"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

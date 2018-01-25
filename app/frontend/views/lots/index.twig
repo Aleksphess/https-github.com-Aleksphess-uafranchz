@@ -1,0 +1,108 @@
+{{ use('frontend/widgets/NewsWidget') }}
+{{ use('frontend/widgets/Advantages') }}
+
+<div class="container">
+    <nav class="breadcrumbs"><a class="breadcrumbs__item" href="{{ Url.home() }}">{{ this.params.main }}</a><a class="breadcrumbs__item" href="{{ Url.to('/category') }}">Каталог франшиз</a><a class="breadcrumbs__item is--current" href="{{ lot.url }}">{{ lot.name }}</a>
+    </nav>
+</div>
+<main class="franchise">
+    <div class="franchise__head">
+        <div class="container">
+            <div class="franchise__header">
+                <h1 class="franchise__title">{{ lot.name }}</h1>
+                <p class="franchise__subtitle"></p>
+            </div>
+            {% if app.user.isGuest!=true and lot.owner_id!=app.user.identity.id  %}
+            <div class="franchise__favorites js-franchise-favorite-toggle-status {% for id in app.user.identity.getBookmarks().all %}{% if id.lot_id==lot.id %} is--active {% endif %} {% endfor %}" data-lot="{{ lot.id }}"><i class="fa fa-star"></i><span class="otherAd__like" >В избранные</span></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="franchise__details">
+        <div class="container">
+            <div class="franchise__photos">
+                <div class="franchise__photo"><img src="{{ lot.bimg }}" alt="{{ lot.name }} "></div>
+                <div class="franchise__thumbs">
+                    <button class="franchise__thumbs-control franchise__thumbs-control--prev js-thumbs-slider-prev"><i class="fa fa-angle-up"></i></button>
+                    <div class="franchise__thumbs-inner js-thumbs-slider">
+                        {% for img in lot.photos %}
+                        <a class="franchise__thumbs-item" href="{{ img.bimg }}" rel="gallery"><img src="{{ img.simg }}" alt="{{ lot.name }} № {{ loop.index }} "></a>
+                        {% endfor %}
+                    </div>
+                    <button class="franchise__thumbs-control franchise__thumbs-control--next js-thumbs-slider-next"><i class="fa fa-angle-down"></i></button>
+                </div>
+            </div>
+            <ul class="franchise__properties">
+                <li class="franchise__properties-item"><strong>Общие инвестиции</strong><span> от {{ lot.invest_min }} до {{ lot.invest_max }} грн.</span></li>
+                <li class="franchise__properties-item"><strong>Площадь</strong><span> от {{ lot.square_min }} до {{ lot.square_max }} м.</span></li>
+                <li class="franchise__properties-item"><strong>Количество сотрудников</strong><span> от {{ lot.personal_mins }} до {{ lot.personal_max }} персон.</span></li>
+                <li class="franchise__properties-item"><strong>Вступительный взнос</strong><span>от {{ lot.contribution_min }} до {{ lot.contribution_max }} грн.</span></li>
+                <li class="franchise__properties-item"><strong>Срок окупаемости</strong><span>от {{ lot.occupation_min }} до {{ lot.occupation_max }}  мес.</span></li>
+            </ul>
+            {% if app.user.isGuest!=true and lot.owner_id!=app.user.identity.id  %}
+            <div class="franchise__action"><span class="franchise__views"><i class="icon icon-eye-grey"></i>{{ lot.views_count }} просмотров</span><a class="franchise__action-btn btn btn--primary js-write-question" data-modal="question" data-id="{{ lot.id }}" href="">Отправить сообщение</a></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="franchise__content">
+        <div class="container">
+            <h2 class="franchise__content-title is--lg">Описание</h2>
+            <div class="franchise__content-text">
+            {{ lot.text|raw }}
+            </div>
+            <h2 class="franchise__content-title is--lg">Описание требований к помещению и сотрудникам</h2>
+            <div class="franchise__content-text">
+                {{ lot.requirements_room|raw }}
+            </div>
+            <h2 class="franchise__content-title is--lg">Описание к затратам</h2>
+            <div class="franchise__content-text">
+                {{ lot.contribution_text|raw }}
+            </div>
+            <h2 class="franchise__content-title is--lg">Описание к инвестициям</h2>
+            <div class="franchise__content-text">
+                {{ lot.invest_text|raw }}
+            </div>
+            <h2 class="franchise__content-title is--lg">Дополнительные описания</h2>
+            <div class="franchise__content-text">
+                {{ lot.dop_settings|raw }}
+            </div>
+
+
+            <h2 class="franchise__content-title is--lg"> Города, в которых представлены объекты сети</h2>
+            <h3>В России</h3>
+            <div class="franchise__content-text">
+                {{ lot.city_in_Russia|raw }}
+            </div>
+            <h3>В Украине</h3>
+            <div class="franchise__content-text">
+                {{ lot.city_in_Ukraine|raw }}
+            </div>
+            <h3>Другие</h3>
+            <div class="franchise__content-text">
+                {{ lot.other_city|raw }}
+            </div>
+
+            <div class="row">
+                <div class="col col--6-of-12 col--m-12-of-12 col--m-12-of-12 col--l-6-of-12">
+                    <h2 class="franchise__content-title">Сфера деятельности</h2>
+                    <ul class="franchise__content-list">
+                        <li>{{ app.user.identity.work_year|date('Y') }} Год основания компании</li>
+                        <li>Регион развития {% if lot.rus==1 %} Россия{% endif %}{% if lot.ukr==1 %} Украина{% endif %}{% if lot.bel==1 %} Беларусь{% endif %}{% if lot.mol==1 %} Молдова{% endif %}{% if lot.kz==1 %} Казахстан{% endif %} </li>
+                        <li>Страна происхождения {{ country.info.title }}</li>
+                        <li>Год основания франч.деятельности  {{ app.user.identity.franchise_year|date('Y') }}</li>
+                    </ul>
+                </div>
+                <div class="col col--6-of-12 col--m-12-of-12 col--m-12-of-12 col--l-6-of-12">
+                    <h2 class="franchise__content-title">Требования</h2>
+                    <ul class="franchise__content-list">
+                        <li>Персонал от {{ lot.personal_mins }} до {{ lot.personal_max }} чел</li>
+                        <li>Площадь помещения от {{ lot.square_min }} до {{ lot.square_max }} кв.м</li>
+                    </ul>
+                </div>
+            </div>
+        {#    <h2 class="franchise__content-title">Видео</h2><img src="/images/franchise/v-1.jpg" alt="">#}
+        </div>
+    </div>
+</main>
+
+                {{ advantages_widget() }}
+                {{ news_widget_widget() }}
